@@ -16,21 +16,21 @@ public class Main {
             char[] guess = sc.nextLine().toCharArray();
             List<Square> row = board.getBoard().get(board.getNumTries());
 
-            for (int i = 0; i < SquareTypes.NUMBER_OF_LETTERS_IN_EACH_ROW; i++) {
+            for (int i = 0; i < Constants.NUMBER_OF_LETTERS_IN_EACH_ROW; i++) {
                 char letter = guess[i];
                 char correctLetter = correct[i];
                 if(letter == correctLetter){
-                    row.get(i).setSquare(SquareTypes.CORRECT);
-                    if(board.isInEarlier(guess, letter, i) && board.numTimes(correct, letter) == 1 && row.get(board.indexOf(guess, letter)).getSquare() == SquareTypes.YELLOW) {
-                        row.get(board.indexOf(guess, letter)).setSquare(SquareTypes.INCORRECT);
+                    row.get(i).setSquare(Constants.CORRECT);
+                    if(board.isInEarlier(guess, letter, i) && board.numTimes(correct, letter) == 1 && row.get(board.indexOf(guess, letter)).getSquare() == Constants.YELLOW) {
+                        row.get(board.indexOf(guess, letter)).setSquare(Constants.INCORRECT);
                     }
-                }else if(board.contains(correct, letter) && !board.isInEarlier(correct,letter,i) && board.numTimes(correct, letter) == 1 && row.get(board.indexOf(guess, letter)).getSquare() != SquareTypes.YELLOW){
-                    row.get(i).setSquare(SquareTypes.YELLOW);
+                }else if(board.contains(correct, letter) && !board.isInEarlier(correct,letter,i) && board.numTimes(correct, letter) == 1 && row.get(board.indexOf(guess, letter)).getSquare() != Constants.YELLOW){
+                    row.get(i).setSquare(Constants.YELLOW);
                 }else if(board.contains(correct, letter) && board.isInEarlier(correct,letter,i)){
-                    row.get(i).setSquare(SquareTypes.YELLOW);
+                    row.get(i).setSquare(Constants.YELLOW);
                 }
                 else{
-                    row.get(i).setSquare(SquareTypes.INCORRECT);
+                    row.get(i).setSquare(Constants.INCORRECT);
                 }
             }
 
@@ -38,7 +38,7 @@ public class Main {
             board.setNumTries(board.getNumTries() + 1);
             int count = 0;
             for (Square s : row) {
-                if (s.getSquare() == SquareTypes.INCORRECT || s.getSquare() == SquareTypes.YELLOW) break;
+                if (s.getSquare() == Constants.INCORRECT || s.getSquare() == Constants.YELLOW) break;
                 else count++;
                 if (count == 5) {
                     System.out.println("You got the word correct! Good job!");

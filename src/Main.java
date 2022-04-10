@@ -21,17 +21,17 @@ public class Main {
                 char letter = guess[i];
                 char correctLetter = correct[i];
                 if(letter == correctLetter){
-                    row.get(i).setSquare(Constants.CORRECT);
+                    row.get(i).setSquare(Constants.GREEN);
                     if(board.isInEarlier(guess, letter, i) && board.numTimes(correct, letter) == 1 && row.get(board.indexOf(guess, letter)).getSquare() == Constants.YELLOW) {
-                        row.get(board.indexOf(guess, letter)).setSquare(Constants.INCORRECT);
+                        row.get(board.indexOf(guess, letter)).setSquare(Constants.GRAY);
                     }
                 }else if(board.contains(correct, letter) && !board.isInEarlier(correct,letter,i) && board.numTimes(correct, letter) == 1 && row.get(board.indexOf(guess, letter)).getSquare() != Constants.YELLOW){
                     row.get(i).setSquare(Constants.YELLOW);
-                }else if(board.contains(correct, letter) && board.isInEarlier(correct,letter,i) && row.get(board.indexOf(guess, letter)).getSquare() != Constants.CORRECT){
+                }else if(board.contains(correct, letter) && board.isInEarlier(correct,letter,i) && row.get(board.indexOf(guess, letter)).getSquare() != Constants.GREEN){
                     row.get(i).setSquare(Constants.YELLOW);
                 }
                 else{
-                    row.get(i).setSquare(Constants.INCORRECT);
+                    row.get(i).setSquare(Constants.GRAY);
                 }
             }
 
@@ -39,7 +39,7 @@ public class Main {
             board.setNumTries(board.getNumTries() + 1);
             int count = 0;
             for (Square s : row) {
-                if (s.getSquare() == Constants.INCORRECT || s.getSquare() == Constants.YELLOW) break;
+                if (s.getSquare() == Constants.GRAY || s.getSquare() == Constants.YELLOW) break;
                 else count++;
                 if (count == 5) {
                     System.out.println("You got the word correct! Good job!");

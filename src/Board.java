@@ -1,57 +1,97 @@
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-public class Main {
+public class Board {
 
-    public static void main(String[] args) {
-        String test = "audio";
-        char[] correct = test.toCharArray();
-        Scanner sc = new Scanner(System.in);
-        Board board = new Board();
-        board.printBoard();
-        boolean won = false;
-        while (board.getNumTries() != 5 && !won) {
-            System.out.println();
-            System.out.println("Make your guess: ");
-            char[] guess = sc.nextLine().toCharArray();
-            List<Square> row = board.getBoard().get(board.getNumTries());
+    private List<List<Square>> board;
+    private int numTries;
 
-            for (int i = 0; i < SquareTypes.NUMBER_OF_LETTERS_IN_EACH_ROW; i++) {
-                char letter = guess[i];
-                char correctLetter = correct[i];
-                if(letter == correctLetter){
-                    row.get(i).setSquare(SquareTypes.CORRECT);
-                    if(board.isInEarlier(guess, letter, i) && board.numTimes(correct, letter) == 1 && row.get(board.indexOf(guess, letter)).getSquare() == SquareTypes.YELLOW) {
-                        row.get(board.indexOf(guess, letter)).setSquare(SquareTypes.INCORRECT);
-                    }
-                }else if(board.contains(correct, letter) && !board.isInEarlier(correct,letter,i) && board.numTimes(correct, letter) == 1 && row.get(board.indexOf(guess, letter)).getSquare() != SquareTypes.YELLOW){
-                    row.get(i).setSquare(SquareTypes.YELLOW);
-                }else if(board.contains(correct, letter) && board.isInEarlier(correct,letter,i) && row.get(board.indexOf(guess, letter)).getSquare() != SquareTypes.CORRECT){
-                    row.get(i).setSquare(SquareTypes.YELLOW);
-                }
-                else{
-                    row.get(i).setSquare(SquareTypes.INCORRECT);
-                }
+    public Board() {
+        numTries = 0;
+        board = new ArrayList<>();
+
+
+        for (int i = 0; i < 6; i++) {
+            List<Square> row = new ArrayList<>();
+            for (int j = 0; j < Constants.NUMBER_OF_LETTERS_IN_EACH_ROW; j++) {
+                row.add(new Square(Constants.DEFAULT));
             }
-
-
-            board.setNumTries(board.getNumTries() + 1);
-            int count = 0;
-            for (Square s : row) {
-                if (s.getSquare() == SquareTypes.INCORRECT || s.getSquare() == SquareTypes.YELLOW) break;
-                else count++;
-                if (count == 5) {
-                    System.out.println("You got the word correct! Good job!");
-                    won = true;
-                    break;
-                }
-            }
-            System.out.println();
-            if (!won) board.printBoard();
-
+            board.add(row);
         }
-        if (!won) {
-            System.out.println("You ran out of tries!\nThe word was: " + test);
-        }
+
     }
+
+    public List<List<Square>> getBoard() {
+        return board;
+    }
+
+    public void setBoard(List<List<Square>> board) {
+        this.board = board;
+    }
+
+    public int getNumTries() {
+        return numTries;
+    }
+
+    public void setNumTries(int numTries) {
+        this.numTries = numTries;
+    }
+
+    public int indexOf(char[] j, char i) {
+        for (int e = 0; e < j.length; e++) {
+            if (j[e] == i) return e;
+        }
+        return -1;
+    }
+
+    public int numTimes(char[] i, char t){
+        int count = 0;
+        for(char e : i){
+            if(t == e) count++;
+        }
+        return count;
+    }
+
+    public void printBoard(String guess) {
+        final int[] count = {0};
+        getBoard().forEach((row)-> {
+            for (Square square : row) {
+                System.out.print(square.getSquare());
+            }
+            if(guess != null && count[0] == getNumTries() - 1) System.out.print(" <--- " + guess);
+            count[0]++;
+            System.out.println();
+        });
+    }
+
+    public boolean contains(char[] row, char letter) {
+        for (char e : row) {
+            if (e == letter) return true;
+        }
+        return false;
+    }
+
+    public boolean isInEarlier(char[] arr, char e, int current){
+        if(current == 0){
+            for(int i = current + 1; i < arr.length; i++){
+                if(arr[i] == e){
+                    return true;
+                }
+            }
+        }
+        else{
+            for(int i = current - 1; i >= 0; i--){
+                if(arr[i] == e){
+                    return true;
+                }
+            }
+            for(int i = current + 1; i < arr.length; i++){
+                if(arr[i] == e){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

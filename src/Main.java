@@ -8,12 +8,13 @@ public class Main {
         char[] correct = test.toCharArray();
         Scanner sc = new Scanner(System.in);
         Board board = new Board();
-        board.printBoard();
+        board.printBoard(null);
         boolean won = false;
         while (board.getNumTries() != 5 && !won) {
             System.out.println();
             System.out.println("Make your guess: ");
-            char[] guess = sc.nextLine().toCharArray();
+            String temp = sc.nextLine();
+            char[] guess = temp.toCharArray();
             List<Square> row = board.getBoard().get(board.getNumTries());
 
             for (int i = 0; i < Constants.NUMBER_OF_LETTERS_IN_EACH_ROW; i++) {
@@ -26,7 +27,7 @@ public class Main {
                     }
                 }else if(board.contains(correct, letter) && !board.isInEarlier(correct,letter,i) && board.numTimes(correct, letter) == 1 && row.get(board.indexOf(guess, letter)).getSquare() != Constants.YELLOW){
                     row.get(i).setSquare(Constants.YELLOW);
-                }else if(board.contains(correct, letter) && board.isInEarlier(correct,letter,i)){
+                }else if(board.contains(correct, letter) && board.isInEarlier(correct,letter,i) && row.get(board.indexOf(guess, letter)).getSquare() != Constants.CORRECT){
                     row.get(i).setSquare(Constants.YELLOW);
                 }
                 else{
@@ -47,7 +48,7 @@ public class Main {
                 }
             }
             System.out.println();
-            if (!won) board.printBoard();
+            if (!won) board.printBoard(temp);
 
         }
         if (!won) {

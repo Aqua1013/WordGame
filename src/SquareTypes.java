@@ -1,4 +1,4 @@
-public interface SquareTypes {
+public interface Constants {
     public final char CORRECT = 'C';
     public final char YELLOW = 'Y';
     public final char INCORRECT = 'N';
